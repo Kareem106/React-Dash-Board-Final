@@ -15,6 +15,9 @@ import UsersTable from "./components/Users/UsersTable";
 import ProductsTable from "./components/products/ProductsTable";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ProductsForm from "./components/products/ProductsForm";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 function App() {
   const router = createBrowserRouter([
     {
@@ -26,6 +29,10 @@ function App() {
       element: <DashBoard></DashBoard>,
       children: [
         {
+          path: "",
+          element: <Home />,
+        },
+        {
           path: "users",
           element: <UsersTable />,
         },
@@ -33,13 +40,20 @@ function App() {
           path: "products",
           element: <ProductsTable />,
         },
+        {
+          path: "products/:id",
+          element: <ProductsForm />,
+        },
       ],
+    },
+    {
+      path: "*",
+      element: <NotFound />,
     },
   ]);
   const { token, validationErr } = useSelector((state) => state.user);
   return (
     <div className="App bg-slate-900 h-screen">
-      {/* <DashBoard></DashBoard> */}
       {validationErr ? <Toast msg={validationErr}></Toast> : <></>}
       {token ? <RouterProvider router={router} /> : <LogInForm />}
     </div>
